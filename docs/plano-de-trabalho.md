@@ -81,9 +81,9 @@ lógica, ≥ 1 screenshot da sua feature para o README, e saber explicar sua par
 ### 1 · Paulo Aranha *(líder)* — Fundação, F1 Lista, ADR
 
 **Fundação (PR #1 — até o fim do dia 1, todo mundo depende dele)**
-- [ ] Abrir a issue de reserva no repo do professor (título na seção 6) e avisar que o grupo tem 7
+- [x] Abrir a issue de reserva no repo do professor e avisar que o grupo tem 7 ([#248](https://github.com/jacksonsmith/puc-iec-mobile-multiplataforma/issues/248))
 - [x] Criar o repo `aranha/mobile-2026-2-grupo-2-rickandmorty`, público
-- [ ] Convidar os 6 como collaborators
+- [x] Convidar os 6 como collaborators
 - [ ] Proteger a `main`: só merge por PR com 1 aprovação + CI verde
 - [x] Copiar o skeleton para `rickandmorty-rn/`, renomear o app (`app.json`, `package.json` está como `gabarito`)
 - [x] Instalar TanStack Query, Zustand, Paper, `expo-image`, bottom tabs
@@ -91,14 +91,14 @@ lógica, ≥ 1 screenshot da sua feature para o README, e saber explicar sua par
 - [x] `api/client.ts` com base URL, timeout e erro tipado (`NotFound` / `Network` / `Http`)
 - [x] Navegação: abas Personagens · Episódios · Favoritos + stack para os detalhes
 - [x] Template de PR e `CODEOWNERS` (o dono do arquivo vira reviewer automático)
-- [ ] Quadro de tarefas (GitHub Projects) com este checklist
+- [x] Checklist compartilhado em que cada um marca o que fez ([artifact](https://claude.ai/artifact/5U739c6GiGkoC3RyMEH4ex), no lugar do GitHub Projects)
 
 **F1 — Lista**
 - [x] `useCharacters` com `useInfiniteQuery` (veio no scaffold)
-- [ ] `toCharacterSummary` e `toCharacterPage` em `api/characters.ts`
-- [ ] `FlatList` com scroll infinito, pull-to-refresh e rodapé carregando
-- [ ] Usar `CharacterCard` / `Skeleton` do Sesaque e `ErrorState` do Hugo
-- [ ] Teste: `toCharacterPage` (`info.next` "...?page=3" → `nextPage: 3`; `null` → `null`; "Alive" → "alive")
+- [x] `toCharacterSummary` e `toCharacterPage` em `api/characters.ts`
+- [x] `FlatList` com scroll infinito, pull-to-refresh e rodapé carregando
+- [x] Usar `CharacterCard` / `Skeleton` do Sesaque e `ErrorState` do Hugo
+- [x] Teste: `toCharacterPage` (`info.next` "...?page=3" → `nextPage: 3`; `null` → `null`; "Alive" → "alive")
 
 **Documentos e coordenação**
 - [ ] `ADR.md` (~1 página): por que RN, por que Query + Zustand, alternativas da seção 1
@@ -216,13 +216,13 @@ Plano B da demo: APK do CI já instalado no celular **e** no emulador, e vídeo 
 
 ## 6. Pendências antes de começar
 
-- [ ] **Data da Aula 6** — conferir no Canvas e preencher o cronograma
-- [ ] **Issue de reserva** (Paulo) em `jacksonsmith/puc-iec-mobile-multiplataforma` — em 2026-11-02
+- [x] **Data da Aula 6**: seg 09/11 · limite interno do grupo: dom 08/11
+- [x] **Issue de reserva** (Paulo, [#248](https://github.com/jacksonsmith/puc-iec-mobile-multiplataforma/issues/248)) em `jacksonsmith/puc-iec-mobile-multiplataforma` — em 2026-11-02
       ninguém tinha reservado. Título:
       `Grupo Paulo, Vinícius, Guilherme, Hugo, Marcus, Rafael, Sesaque — Rick and Morty + React Native`
       e no corpo: "Grupo de 7 integrantes, 7 features (1 por pessoa): as 5 do enunciado + Episódios e Tema claro/escuro."
 - [ ] Todos com Node LTS, Android Studio e um emulador (API 35) rodando o skeleton **antes** do D+1
-- [ ] Logins do GitHub para os convites: `Vicinius115`, `GuilhermeJeske1006`, `hugofpiani`,
+- [x] Logins do GitHub para os convites: `Vicinius115`, `GuilhermeJeske1006`, `hugofpiani`,
       `marcus-santos`, `olimarafael`, `sesaquecruz`
 - [ ] Vinícius: no repo anterior parte dos commits saiu com o autor `1310290` → acertar o
       `git config user.name/user.email` para a Contribuição individual contar certo
