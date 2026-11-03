@@ -1,0 +1,15 @@
+# Feature 2 — navegação lista → detalhe
+appId: com.puciec.rickmortyfinal
+---
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: "item-list-screen"
+    timeout: 20000
+- tapOn:
+    id: "item-card-1"
+- assertVisible:
+    id: "detail-screen"
+- assertVisible:
+    id: "detail-title"
+- assertVisible: "Rick Sanchez"
