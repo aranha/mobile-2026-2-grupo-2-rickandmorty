@@ -67,7 +67,9 @@ useCharacters(filters: { name?: string; status?: 'alive' | 'dead' | 'unknown' })
 - Episódio vem como `"S01E01"` e o personagem traz `episode: [urls]` → extrair ids das URLs.
 - O skeleton salva favoritos na chave `favorite_pokemon_ids` (copiado da PokeAPI) → renomear.
 
-**Arquivos têm dono.** Mexeu no arquivo de outra pessoa? Avisa no grupo e marca a pessoa como reviewer.
+**Cada pendência está no código como `TODO(F<n> · <nome>)`** — `grep -rn "TODO(F3" rickandmorty-rn/src`.
+
+**Arquivos têm dono** (ver `.github/CODEOWNERS`). Mexeu no arquivo de outra pessoa? Avisa no grupo e marca a pessoa como reviewer.
 
 ---
 
@@ -80,20 +82,23 @@ lógica, ≥ 1 screenshot da sua feature para o README, e saber explicar sua par
 
 **Fundação (PR #1 — até o fim do dia 1, todo mundo depende dele)**
 - [ ] Abrir a issue de reserva no repo do professor (título na seção 6) e avisar que o grupo tem 7
-- [ ] Criar o repo `aranha/mobile-2026-2-grupo-2-rickandmorty`, público, os 6 como collaborators
+- [x] Criar o repo `aranha/mobile-2026-2-grupo-2-rickandmorty`, público
+- [ ] Convidar os 6 como collaborators
 - [ ] Proteger a `main`: só merge por PR com 1 aprovação + CI verde
-- [ ] Copiar o skeleton para `rickandmorty-rn/`, renomear o app (`app.json`, `package.json` está como `gabarito`)
-- [ ] Instalar TanStack Query, Zustand, Paper, `expo-image`, bottom tabs
-- [ ] Montar a estrutura da seção 3 com **stubs** de cada dono (telas vazias, hooks e stores tipados)
-- [ ] `api/client.ts` com base URL, timeout e erro tipado (`NotFound` / `Network` / `Http`)
-- [ ] Navegação: abas Personagens · Episódios · Favoritos + stack para os detalhes
-- [ ] Templates de PR e issue; quadro de tarefas (GitHub Projects) com este checklist
+- [x] Copiar o skeleton para `rickandmorty-rn/`, renomear o app (`app.json`, `package.json` está como `gabarito`)
+- [x] Instalar TanStack Query, Zustand, Paper, `expo-image`, bottom tabs
+- [x] Montar a estrutura da seção 3 com **stubs** de cada dono (telas vazias, hooks e stores tipados)
+- [x] `api/client.ts` com base URL, timeout e erro tipado (`NotFound` / `Network` / `Http`)
+- [x] Navegação: abas Personagens · Episódios · Favoritos + stack para os detalhes
+- [x] Template de PR e `CODEOWNERS` (o dono do arquivo vira reviewer automático)
+- [ ] Quadro de tarefas (GitHub Projects) com este checklist
 
 **F1 — Lista**
-- [ ] `useCharacters` com `useInfiniteQuery` (página seguinte via `info.next`)
+- [x] `useCharacters` com `useInfiniteQuery` (veio no scaffold)
+- [ ] `toCharacterSummary` e `toCharacterPage` em `api/characters.ts`
 - [ ] `FlatList` com scroll infinito, pull-to-refresh e rodapé carregando
 - [ ] Usar `CharacterCard` / `Skeleton` do Sesaque e `ErrorState` do Hugo
-- [ ] Teste: `getNextPageParam` (tem `next` → número da página; `null` → `undefined`)
+- [ ] Teste: `toCharacterPage` (`info.next` "...?page=3" → `nextPage: 3`; `null` → `null`; "Alive" → "alive")
 
 **Documentos e coordenação**
 - [ ] `ADR.md` (~1 página): por que RN, por que Query + Zustand, alternativas da seção 1
@@ -117,7 +122,7 @@ lógica, ≥ 1 screenshot da sua feature para o README, e saber explicar sua par
 - [ ] Chips Todos · Alive · Dead · unknown no topo da lista (`SegmentedButtons` ou `Chip` do Paper)
 - [ ] Filtro vai para `useCharacters({ status })` — filtro **na API**, não na página carregada
 - [ ] Funciona combinado com a busca do Hugo (`?name=rick&status=dead`)
-- [ ] Teste: `buildCharacterQuery(filters)` monta a querystring certa (vazio, só status, os dois)
+- [ ] Teste: `buildCharacterQuery(filters, page)` monta os parâmetros certos (vazio, só status, os dois, nome só com espaços)
 
 **CI e testes (para o grupo inteiro)**
 - [ ] Configurar Jest (`jest-expo`) + `@testing-library/react-native` no PR #1 ou logo depois

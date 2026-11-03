@@ -1,0 +1,14 @@
+# Feature 4 — categoria/filtro estruturado (status "Dead")
+appId: com.puciec.rickmortyfinal
+---
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: "item-list-screen"
+    timeout: 20000
+- tapOn:
+    id: "category-chip-dead"
+- assertVisible:
+    id: "item-card-8"
+- assertNotVisible:
+    id: "item-card-1"
