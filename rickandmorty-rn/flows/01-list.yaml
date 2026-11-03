@@ -1,0 +1,10 @@
+# Feature 1 — lista consumindo API real (Rick and Morty API)
+appId: com.puciec.rickmortyfinal
+---
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: "item-list-screen"
+    timeout: 20000
+- assertVisible:
+    id: "item-card-1"
