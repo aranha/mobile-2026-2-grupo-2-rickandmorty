@@ -1,0 +1,61 @@
+import { toCharacterPage, toCharacterSummary } from './characters';
+import type { CharacterDto, PageDto } from './dto';
+
+// Rick Sanchez como a API devolve (só os campos que importam aqui).
+function characterDto(overrides: Partial<CharacterDto> = {}): CharacterDto {
+  return {
+    id: 1,
+    name: 'Rick Sanchez',
+    status: 'Alive',
+    species: 'Human',
+    type: '',
+    gender: 'Male',
+    origin: { name: 'Earth (C-137)', url: 'https://rickandmortyapi.com/api/location/1' },
+    location: { name: 'Citadel of Ricks', url: 'https://rickandmortyapi.com/api/location/3' },
+    image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
+    episode: ['https://rickandmortyapi.com/api/episode/1'],
+    url: 'https://rickandmortyapi.com/api/character/1',
+    created: '2017-11-04T18:48:46.250Z',
+    ...overrides,
+  };
+}
+
+function pageDto(next: string | null, results: CharacterDto[] = [characterDto()]): PageDto<CharacterDto> {
+  return { info: { count: 826, pages: 42, next, prev: null }, results };
+}
+
+describe('toCharacterSummary', () => {
+  it('leva só o que a lista usa e passa o status para minúsculo', () => {
+    expect(toCharacterSummary(characterDto())).toEqual({
+      id: 1,
+      name: 'Rick Sanchez',
+      status: 'alive',
+      species: 'Human',
+      image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
+    });
+  });
+
+  it('mapeia Dead e unknown, e status fora do contrato vira unknown', () => {
+    expect(toCharacterSummary(characterDto({ status: 'Dead' })).status).toBe('dead');
+    expect(toCharacterSummary(characterDto({ status: 'unknown' })).status).toBe('unknown');
+    const unexpected = characterDto({ status: 'Zombie' as CharacterDto['status'] });
+    expect(toCharacterSummary(unexpected).status).toBe('unknown');
+  });
+});
+
+describe('toCharacterPage', () => {
+  it('tira o número da próxima página de info.next', () => {
+    const page = toCharacterPage(pageDto('https://rickandmortyapi.com/api/character/?page=3'));
+    expect(page.nextPage).toBe(3);
+    expect(page.items).toHaveLength(1);
+  });
+
+  it('acha a página mesmo com busca e filtro na URL', () => {
+    const next = 'https://rickandmortyapi.com/api/character/?name=rick&page=2&status=dead';
+    expect(toCharacterPage(pageDto(next)).nextPage).toBe(2);
+  });
+
+  it('nextPage é null na última página', () => {
+    expect(toCharacterPage(pageDto(null)).nextPage).toBeNull();
+  });
+});

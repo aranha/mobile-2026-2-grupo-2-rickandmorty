@@ -1,16 +1,42 @@
 import { getJson } from './client';
 import type { CharacterDto, PageDto } from './dto';
-import type { CharacterDetail, CharacterFilters, CharacterSummary, Page } from '../domain/character';
+import type {
+  CharacterDetail,
+  CharacterFilters,
+  CharacterStatus,
+  CharacterSummary,
+  Page,
+} from '../domain/character';
 import { buildCharacterQuery } from '../domain/filters';
 
-// TODO(F1 · Paulo): CharacterDto → CharacterSummary ("Alive" vira "alive").
+const STATUS_FROM_API: Record<CharacterDto['status'], CharacterStatus> = {
+  Alive: 'alive',
+  Dead: 'dead',
+  unknown: 'unknown',
+};
+
 export function toCharacterSummary(dto: CharacterDto): CharacterSummary {
-  throw new Error('TODO(F1 · Paulo): toCharacterSummary');
+  return {
+    id: dto.id,
+    name: dto.name,
+    // Valor fora do contrato da API não derruba a lista: vira "unknown".
+    status: STATUS_FROM_API[dto.status] ?? 'unknown',
+    species: dto.species,
+    image: dto.image,
+  };
 }
 
-// TODO(F1 · Paulo): results → items e info.next ("...?page=3") → nextPage 3 (null quando acabou).
+/** "https://.../character/?page=3&status=dead" → 3; null quando não há próxima página. */
+function pageFromUrl(url: string | null): number | null {
+  const match = url?.match(/[?&]page=(\d+)/);
+  return match ? Number(match[1]) : null;
+}
+
 export function toCharacterPage(dto: PageDto<CharacterDto>): Page<CharacterSummary> {
-  throw new Error('TODO(F1 · Paulo): toCharacterPage');
+  return {
+    items: dto.results.map(toCharacterSummary),
+    nextPage: pageFromUrl(dto.info.next),
+  };
 }
 
 // TODO(F2 · Vinícius): CharacterDto → CharacterDetail. Texto vazio da API ("type": "") vira "—";
