@@ -1,0 +1,40 @@
+# Dono de cada pedaço: quem mexer no arquivo de outra pessoa recebe o dono como reviewer.
+# Divisão completa em docs/plano-de-trabalho.md.
+
+*                                                       @aranha
+
+# F2 · Vinícius — Detalhe
+/rickandmorty-rn/src/screens/CharacterDetailScreen.tsx  @Vicinius115
+/rickandmorty-rn/src/queries/useCharacter.ts            @Vicinius115
+
+# F3 · Hugo — Busca e estados
+/rickandmorty-rn/src/components/CharacterSearchBar.tsx  @hugofpiani
+/rickandmorty-rn/src/components/ErrorState.tsx          @hugofpiani
+/rickandmorty-rn/src/components/EmptyState.tsx          @hugofpiani
+
+# F4 · Guilherme — Filtro, CI e testes
+/rickandmorty-rn/src/domain/filters.ts                  @GuilhermeJeske1006
+/rickandmorty-rn/src/components/StatusFilterChips.tsx   @GuilhermeJeske1006
+/.github/workflows/                                     @GuilhermeJeske1006
+
+# F5 · Marcus — Favoritos e README
+/rickandmorty-rn/src/stores/favoritesStore.ts           @marcus-santos
+/rickandmorty-rn/src/components/FavoriteButton.tsx      @marcus-santos
+/rickandmorty-rn/src/screens/FavoritesScreen.tsx        @marcus-santos
+/rickandmorty-rn/README.md                              @marcus-santos
+
+# F6 · Rafael — Episódios
+/rickandmorty-rn/src/api/episodes.ts                    @olimarafael
+/rickandmorty-rn/src/domain/episode.ts                  @olimarafael
+/rickandmorty-rn/src/domain/ids.ts                      @olimarafael
+/rickandmorty-rn/src/queries/useEpisodes.ts             @olimarafael
+/rickandmorty-rn/src/screens/Episode*                   @olimarafael
+/rickandmorty-rn/src/components/CharacterEpisodesSection.tsx  @olimarafael
+
+# F7 · Sesaque — Tema e design system
+/rickandmorty-rn/src/theme/                             @sesaquecruz
+/rickandmorty-rn/src/stores/themeStore.ts               @sesaquecruz
+/rickandmorty-rn/src/components/CharacterCard.tsx       @sesaquecruz
+/rickandmorty-rn/src/components/StatusBadge.tsx         @sesaquecruz
+/rickandmorty-rn/src/components/Skeleton.tsx            @sesaquecruz
+/rickandmorty-rn/assets/                                @sesaquecruz
