@@ -101,7 +101,7 @@ lógica, ≥ 1 screenshot da sua feature para o README, e saber explicar sua par
 - [x] Teste: `toCharacterPage` (`info.next` "...?page=3" → `nextPage: 3`; `null` → `null`; "Alive" → "alive")
 
 **Documentos e coordenação**
-- [ ] `ADR.md` (~1 página): por que RN, por que Query + Zustand, alternativas da seção 1
+- [x] `ADR.md` (~1 página): por que RN, por que Query + Zustand, alternativas da seção 1 — [`rickandmorty-rn/ADR.md`](../rickandmorty-rn/ADR.md)
 - [ ] Review e merge dos PRs; `main` sempre buildando
 - [ ] Roteiro cronometrado da apresentação (seção 5) e ensaio geral
 - [ ] Colar a URL do repo no Canvas
