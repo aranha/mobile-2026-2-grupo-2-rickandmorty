@@ -41,9 +41,23 @@ export function toCharacterPage(dto: PageDto<CharacterDto>): Page<CharacterSumma
 
 // TODO(F2 · Vinícius): CharacterDto → CharacterDetail. Texto vazio da API ("type": "") vira "—";
 // episode[] vira episodeIds com idsFromUrls (domain/ids.ts, do Rafael).
+
 export function toCharacterDetail(dto: CharacterDto): CharacterDetail {
-  throw new Error('TODO(F2 · Vinícius): toCharacterDetail');
+  const textOrDash = (value: string): string =>
+    value.trim() || '—';
+
+  return {
+    ...toCharacterSummary(dto),
+    type: textOrDash(dto.type),
+    gender: textOrDash(dto.gender),
+    origin: textOrDash(dto.origin.name),
+    location: textOrDash(dto.location.name),
+    episodeIds: dto.episode
+      .map((url) => Number(url.match(/\/(\d+)\/?$/)?.[1]))
+      .filter((id) => Number.isInteger(id) && id > 0),
+  };
 }
+
 
 export async function getCharacters(
   filters: CharacterFilters,
