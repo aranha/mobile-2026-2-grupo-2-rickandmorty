@@ -1,4 +1,8 @@
-import { toCharacterPage, toCharacterSummary } from './characters';
+import {
+  toCharacterPage,
+  toCharacterSummary,
+  toCharacterDetail,
+} from './characters';
 import type { CharacterDto, PageDto } from './dto';
 
 // Rick Sanchez como a API devolve (só os campos que importam aqui).
@@ -57,5 +61,46 @@ describe('toCharacterPage', () => {
 
   it('nextPage é null na última página', () => {
     expect(toCharacterPage(pageDto(null)).nextPage).toBeNull();
+  });
+});
+
+describe('F2 - toCharacterDetail', () => {
+  it('mapeia os dados completos do personagem', () => {
+    const detail = toCharacterDetail(characterDto());
+
+    expect(detail.id).toBe(1);
+    expect(detail.name).toBe('Rick Sanchez');
+    expect(detail.status).toBe('alive');
+    expect(detail.species).toBe('Human');
+    expect(detail.gender).toBe('Male');
+    expect(detail.origin).toBe('Earth (C-137)');
+    expect(detail.location).toBe('Citadel of Ricks');
+  });
+
+  it('converte campos vazios para travessão', () => {
+    const detail = toCharacterDetail(
+      characterDto({
+        type: '',
+        origin: { name: '', url: '' },
+        location: { name: '', url: '' },
+      }),
+    );
+
+    expect(detail.type).toBe('—');
+    expect(detail.origin).toBe('—');
+    expect(detail.location).toBe('—');
+  });
+
+  it('extrai corretamente os IDs dos episódios', () => {
+    const detail = toCharacterDetail(
+      characterDto({
+        episode: [
+          'https://rickandmortyapi.com/api/episode/1',
+          'https://rickandmortyapi.com/api/episode/2',
+        ],
+      }),
+    );
+
+    expect(detail.episodeIds).toEqual([1, 2]);
   });
 });
