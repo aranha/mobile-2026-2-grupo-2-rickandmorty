@@ -126,8 +126,8 @@ lógica, ≥ 1 screenshot da sua feature para o README, e saber explicar sua par
 
 **CI e testes (para o grupo inteiro)**
 - [x] Configurar Jest (`jest-expo`) + `@testing-library/react-native` (v14: `render`/`fireEvent` são `await`)
-- [ ] GitHub Actions em todo PR: `npm ci` → `tsc --noEmit` → `npm test` → `expo prebuild` → `assembleRelease` — escrito em `.github/workflows/ci.yml`, falta a 1ª execução verde
-- [ ] Gerar o APK como artefato do CI (vira o plano B da demo) — release assinado com a chave de debug, porque o APK debug só abre com o Metro rodando
+- [x] GitHub Actions em todo PR: `npm ci` → `tsc --noEmit` → `npm test` → `expo prebuild` → `assembleRelease` (`.github/workflows/ci.yml`, verde no PR #6)
+- [x] Gerar o APK como artefato do CI (vira o plano B da demo) — artefato `rickandmorty-apk` na aba Actions; é release assinado com a chave de debug, porque o APK debug só abre com o Metro rodando
 - [x] Conferir no fim que existem **≥ 3 casos** de teste passando (meta: 7+, um por pessoa) — 25 hoje
 
 ### 4 · Hugo Piani — F3 Busca + estados vazio/erro/offline
