@@ -9,6 +9,7 @@ import { ErrorState } from '../components/ErrorState';
 import { Skeleton } from '../components/Skeleton';
 import { StatusFilterChips } from '../components/StatusFilterChips';
 import type { CharacterFilters, CharacterSummary } from '../domain/character';
+import { normalizeFilters } from '../domain/filters';
 import type { TabScreenProps } from '../navigation/types';
 import { useCharacters } from '../queries/useCharacters';
 import { radius, spacing } from '../theme/tokens';
@@ -50,7 +51,8 @@ export function CharactersScreen({ navigation }: TabScreenProps<'Characters'>) {
     }
   }, [refetch]);
 
-  const hasFilters = Boolean(filters.name || filters.status);
+  // Mesmo critério do useCharacters: nome só com espaços não conta como filtro.
+  const hasFilters = Object.keys(normalizeFilters(filters)).length > 0;
 
   let content;
   if (query.isPending) {
