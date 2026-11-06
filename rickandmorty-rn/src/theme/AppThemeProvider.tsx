@@ -11,8 +11,11 @@ import {
 } from '@react-navigation/native';
 import { PaperProvider, adaptNavigationTheme } from 'react-native-paper';
 import { useThemeStore } from '../stores/themeStore';
+import { hideWebScrollbars } from './hideWebScrollbars';
 import { darkTheme, lightTheme } from './paperThemes';
 import { resolveTheme } from './resolveTheme';
+
+hideWebScrollbars();
 
 // A splash só sai quando a fonte carregou e a preferência de tema foi lida do disco:
 // assim o app não abre piscando no tema errado nem com a fonte do sistema nos títulos.
