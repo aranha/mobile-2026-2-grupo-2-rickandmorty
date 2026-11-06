@@ -15,8 +15,6 @@ export interface CharacterCardProps {
 }
 
 const AVATAR_SIZE = 64;
-// Borrão neutro enquanto a foto carrega (expo-image), para o card não abrir com um buraco.
-const AVATAR_PLACEHOLDER = { blurhash: 'L6PZfSi_.AyE_3t7t7R**0o#DgR4' };
 
 /** Card da lista e dos favoritos: foto, nome, espécie, status e espaço para o FavoriteButton. */
 export function CharacterCard({ character, onPress }: CharacterCardProps) {
@@ -38,9 +36,10 @@ export function CharacterCard({ character, onPress }: CharacterCardProps) {
             <MaterialCommunityIcons name="account-question" size={32} color={colors.onSurfaceVariant} />
           </View>
         ) : (
+          // Enquanto a foto carrega, o placeholder é o fundo surfaceVariant (acompanha o tema;
+          // um blurhash fixo acendia um quadrado claro no tema escuro) e a foto entra com fade.
           <Image
             source={character.image}
-            placeholder={AVATAR_PLACEHOLDER}
             transition={200}
             contentFit="cover"
             recyclingKey={String(character.id)}
