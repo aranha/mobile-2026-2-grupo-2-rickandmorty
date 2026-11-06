@@ -19,4 +19,10 @@ describe('resolveTheme', () => {
   it('escolha explícita vale mesmo sem resposta do aparelho', () => {
     expect(resolveTheme('dark', null)).toBe('dark');
   });
+
+  it('preferência desconhecida (ex.: disco corrompido) segue o sistema', () => {
+    const corrupted = 'roxo' as unknown as Parameters<typeof resolveTheme>[0];
+    expect(resolveTheme(corrupted, 'dark')).toBe('dark');
+    expect(resolveTheme(corrupted, 'light')).toBe('light');
+  });
 });
