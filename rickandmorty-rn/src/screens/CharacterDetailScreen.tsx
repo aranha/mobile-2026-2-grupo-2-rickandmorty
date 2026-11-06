@@ -36,7 +36,7 @@ export function CharacterDetailScreen({
     navigation.setOptions({
       title: character?.name ?? route.params.name ?? 'Detalhes',
       headerRight: character
-        ? () => <FavoriteButton character={character} />
+        ? () => <FavoriteButton character={character} testID="detail-favorite-button" />
         : undefined,
     });
   }, [navigation, character, route.params.name]);
