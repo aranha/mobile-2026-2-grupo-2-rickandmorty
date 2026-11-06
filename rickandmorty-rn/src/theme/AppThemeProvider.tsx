@@ -8,7 +8,9 @@ import {
   NavigationContainer,
 } from '@react-navigation/native';
 import { PaperProvider, adaptNavigationTheme } from 'react-native-paper';
+import { useThemeStore } from '../stores/themeStore';
 import { darkTheme, lightTheme } from './paperThemes';
+import { resolveTheme } from './resolveTheme';
 
 // O tema do Paper também pinta header e abas do React Navigation.
 const { LightTheme: navigationLight, DarkTheme: navigationDark } = adaptNavigationTheme({
@@ -19,8 +21,8 @@ const { LightTheme: navigationLight, DarkTheme: navigationDark } = adaptNavigati
 });
 
 export function AppThemeProvider({ children }: { children: ReactNode }) {
-  // TODO(F7 · Sesaque): trocar por resolveTheme(preference do themeStore, esquema do sistema).
-  const isDark = useColorScheme() === 'dark';
+  const preference = useThemeStore((state) => state.preference);
+  const isDark = resolveTheme(preference, useColorScheme()) === 'dark';
 
   return (
     <PaperProvider
