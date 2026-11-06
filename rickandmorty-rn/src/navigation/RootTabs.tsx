@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { ThemeMenu } from '../components/ThemeMenu';
 import { CharactersScreen } from '../screens/CharactersScreen';
 import { EpisodesScreen } from '../screens/EpisodesScreen';
 import { FavoritesScreen } from '../screens/FavoritesScreen';
@@ -16,7 +17,7 @@ const tabIcon =
 
 export function RootTabs() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{ headerRight: () => <ThemeMenu /> }}>
       <Tab.Screen
         name="Characters"
         component={CharactersScreen}
