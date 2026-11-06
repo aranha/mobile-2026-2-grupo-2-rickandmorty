@@ -26,11 +26,21 @@ const { LightTheme: navigationLight, DarkTheme: navigationDark } = adaptNavigati
   materialDark: darkTheme,
 });
 
+// Se ler o AsyncStorage falhar, o persist nunca avisa que terminou: segue com "Sistema" em vez de travar na splash.
+const HYDRATION_TIMEOUT_MS = 1500;
+
 function useThemeHydrated(): boolean {
   const [hydrated, setHydrated] = useState(() => useThemeStore.persist.hasHydrated());
   useEffect(() => {
     if (hydrated) return;
-    return useThemeStore.persist.onFinishHydration(() => setHydrated(true));
+    const unsubscribe = useThemeStore.persist.onFinishHydration(() => setHydrated(true));
+    // A leitura pode ter terminado entre o primeiro render e este efeito: aí o aviso já passou.
+    if (useThemeStore.persist.hasHydrated()) setHydrated(true);
+    const timeout = setTimeout(() => setHydrated(true), HYDRATION_TIMEOUT_MS);
+    return () => {
+      unsubscribe();
+      clearTimeout(timeout);
+    };
   }, [hydrated]);
   return hydrated;
 }
