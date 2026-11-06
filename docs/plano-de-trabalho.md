@@ -161,12 +161,12 @@ lógica, ≥ 1 screenshot da sua feature para o README, e saber explicar sua par
 
 ### 6 · Rafael Lima — F6 Episódios
 
-- [ ] `api/episodes.ts`: lista paginada (`/episode`, 51 episódios) e por ids (`/episode/1,2,3`)
-- [ ] Aba Episódios agrupada por temporada (`SectionList`: Temporada 1 … 5)
-- [ ] Detalhe do episódio: nome, código, data de exibição, grade com os personagens (toque → detalhe)
-- [ ] Seção "Aparece em N episódios" no detalhe do personagem (no espaço que o Vinícius deixa)
-- [ ] Teste: `parseEpisodeCode("S02E07")` → `{ season: 2, episode: 7 }` e `groupBySeason`
-- [ ] Teste: `idsFromUrls` extrai ids das URLs e normaliza objeto × array
+- [x] `api/episodes.ts`: lista paginada (`/episode`, 51 episódios) e por ids (`/episode/1,2,3`)
+- [x] Aba Episódios agrupada por temporada (`SectionList`: Temporada 1 … 5)
+- [x] Detalhe do episódio: nome, código, data de exibição, grade com os personagens (toque → detalhe)
+- [x] Seção "Aparece em N episódios" no detalhe do personagem (no espaço que o Vinícius deixa)
+- [x] Teste: `parseEpisodeCode("S02E07")` → `{ season: 2, episode: 7 }` e `groupBySeason`
+- [x] Teste: `idsFromUrls` extrai ids das URLs e normaliza objeto × array
 
 ### 7 · Sesaque Cruz — F7 Tema claro/escuro + design system
 

@@ -1,4 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import type { Episode } from '../domain/episode';
 import { getCharactersByIds } from '../api/characters';
 import { getAllEpisodes, getEpisode, getEpisodesByIds } from '../api/episodes';
 import { queryKeys } from './keys';
@@ -13,9 +14,13 @@ export function useEpisodes() {
 }
 
 export function useEpisode(id: number) {
-  return useQuery({
+  const queryClient = useQueryClient();
+  return useQuery<Episode, Error>({
     queryKey: queryKeys.episode(id),
     queryFn: ({ signal }) => getEpisode(id, signal),
+    // Veio da aba Episódios? O episódio já está no cache da lista: a tela abre na hora.
+    placeholderData: (): Episode | undefined =>
+      queryClient.getQueryData<Episode[]>(queryKeys.episodes())?.find((episode) => episode.id === id),
   });
 }
 
