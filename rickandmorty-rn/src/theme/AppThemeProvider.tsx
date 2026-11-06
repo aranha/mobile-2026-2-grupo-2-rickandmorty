@@ -1,6 +1,8 @@
-import type { ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { useColorScheme } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import * as SplashScreen from 'expo-splash-screen';
+import { Fredoka_500Medium, Fredoka_600SemiBold, useFonts } from '@expo-google-fonts/fredoka';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {
   DarkTheme as NavigationDarkTheme,
@@ -8,9 +10,18 @@ import {
   NavigationContainer,
 } from '@react-navigation/native';
 import { PaperProvider, adaptNavigationTheme } from 'react-native-paper';
+import { useThemeStore } from '../stores/themeStore';
+import { hideWebScrollbars } from './hideWebScrollbars';
 import { darkTheme, lightTheme } from './paperThemes';
+import { resolveTheme } from './resolveTheme';
 
-// O tema do Paper também pinta header e abas do React Navigation.
+hideWebScrollbars();
+
+// A splash só sai quando a fonte carregou e a preferência de tema foi lida do disco:
+// assim o app não abre piscando no tema errado nem com a fonte do sistema nos títulos.
+SplashScreen.preventAutoHideAsync().catch(() => {});
+
+// O tema do Paper também pinta header e abas do React Navigation (inclusive a fonte dos títulos).
 const { LightTheme: navigationLight, DarkTheme: navigationDark } = adaptNavigationTheme({
   reactNavigationLight: NavigationLightTheme,
   reactNavigationDark: NavigationDarkTheme,
@@ -18,9 +29,38 @@ const { LightTheme: navigationLight, DarkTheme: navigationDark } = adaptNavigati
   materialDark: darkTheme,
 });
 
+// Se ler o AsyncStorage falhar, o persist nunca avisa que terminou: segue com "Sistema" em vez de travar na splash.
+const HYDRATION_TIMEOUT_MS = 1500;
+
+function useThemeHydrated(): boolean {
+  const [hydrated, setHydrated] = useState(() => useThemeStore.persist.hasHydrated());
+  useEffect(() => {
+    if (hydrated) return;
+    const unsubscribe = useThemeStore.persist.onFinishHydration(() => setHydrated(true));
+    // A leitura pode ter terminado entre o primeiro render e este efeito: aí o aviso já passou.
+    if (useThemeStore.persist.hasHydrated()) setHydrated(true);
+    const timeout = setTimeout(() => setHydrated(true), HYDRATION_TIMEOUT_MS);
+    return () => {
+      unsubscribe();
+      clearTimeout(timeout);
+    };
+  }, [hydrated]);
+  return hydrated;
+}
+
 export function AppThemeProvider({ children }: { children: ReactNode }) {
-  // TODO(F7 · Sesaque): trocar por resolveTheme(preference do themeStore, esquema do sistema).
-  const isDark = useColorScheme() === 'dark';
+  const preference = useThemeStore((state) => state.preference);
+  const isDark = resolveTheme(preference, useColorScheme()) === 'dark';
+  const hydrated = useThemeHydrated();
+  // Se a fonte falhar, segue com a do sistema em vez de travar na splash.
+  const [fontsLoaded, fontError] = useFonts({ Fredoka_500Medium, Fredoka_600SemiBold });
+  const ready = hydrated && (fontsLoaded || fontError !== null);
+
+  useEffect(() => {
+    if (ready) SplashScreen.hideAsync().catch(() => {});
+  }, [ready]);
+
+  if (!ready) return null;
 
   return (
     <PaperProvider
