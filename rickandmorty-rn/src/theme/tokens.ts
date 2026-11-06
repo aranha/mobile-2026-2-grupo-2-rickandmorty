@@ -27,6 +27,12 @@ export const palette = {
   ink: '#181D14',
 } as const;
 
+/** Fonte própria dos títulos (Fredoka, carregada no AppThemeProvider). O corpo usa a fonte do sistema. */
+export const fonts = {
+  display: 'Fredoka_600SemiBold',
+  title: 'Fredoka_500Medium',
+} as const;
+
 export const statusColors: Record<CharacterStatus, string> = {
   alive: '#55CC44',
   dead: '#D63D2E',
