@@ -8,6 +8,7 @@ import type {
   Page,
 } from '../domain/character';
 import { buildCharacterQuery } from '../domain/filters';
+import { asArray } from '../domain/ids';
 
 const STATUS_FROM_API: Record<CharacterDto['status'], CharacterStatus> = {
   Alive: 'alive',
@@ -73,7 +74,10 @@ export async function getCharacter(id: number, signal?: AbortSignal): Promise<Ch
   return toCharacterDetail(await getJson<CharacterDto>(`/character/${id}`, undefined, signal));
 }
 
-// TODO(F6 · Rafael): /character/1,2,3 devolve array, mas /character/1 devolve objeto — normalizar.
+/** /character/1,2,3 devolve array, mas /character/1 devolve objeto — asArray normaliza. */
 export async function getCharactersByIds(ids: number[], signal?: AbortSignal): Promise<CharacterSummary[]> {
-  throw new Error('TODO(F6 · Rafael): getCharactersByIds');
+  // "/character/" sem ids devolveria a página 1 inteira, não uma lista vazia.
+  if (ids.length === 0) return [];
+  const data = await getJson<CharacterDto | CharacterDto[]>(`/character/${ids.join(',')}`, undefined, signal);
+  return asArray(data).map(toCharacterSummary);
 }
