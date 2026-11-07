@@ -24,10 +24,13 @@
     "zustand": "^5.0.16"
   },
   "devDependencies": {
+    "@react-native/jest-preset": "0.86.3",
+    "@testing-library/react-native": "^14.1.0",
     "@types/jest": "^29.5.14",
     "@types/react": "~19.2.2",
     "jest": "^29.7.0",
-    "ts-jest": "^29.4.15",
+    "jest-expo": "~57.0.6",
+    "test-renderer": "~1.2.0",
     "typescript": "~6.0.3"
   },
   "scripts": {
@@ -35,8 +38,9 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
+    "typecheck": "tsc --noEmit",
     "test": "jest",
-    "typecheck": "tsc --noEmit"
+    "test:ci": "jest --ci"
   },
   "private": true
 }

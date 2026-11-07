@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Push novo no mesmo PR cancela a execução anterior. Na main não: cada merge tem que gerar o seu APK.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+env:
+  CI: true
+
+defaults:
+  run:
+    working-directory: rickandmorty-rn
+
+jobs:
+  checks:
+    name: Typecheck e testes
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: rickandmorty-rn/package-lock.json
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run test:ci
+
+  android:
+    name: APK (Android)
+    needs: checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: rickandmorty-rn/package-lock.json
+
+      # RN 0.86 usa jvmToolchain(17) no plugin Gradle.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - run: npm ci
+
+      - name: expo prebuild
+        run: npx expo prebuild --platform android --no-install
+
+      # Release, não debug: o APK debug não leva o JS e só abre com o Metro rodando — não serve
+      # de plano B da demo. O template do Expo assina o release com a keystore de debug (sem segredo).
+      # Só arm64 (celular) e x86_64 (emulador) para o build não demorar o dobro.
+      - name: assembleRelease
+        working-directory: rickandmorty-rn/android
+        run: ./gradlew assembleRelease --no-daemon -PreactNativeArchitectures=arm64-v8a,x86_64
+
+      # O path do upload é relativo à raiz do repositório, não ao working-directory.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rickandmorty-apk
+          path: rickandmorty-rn/android/app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
+          retention-days: 14
