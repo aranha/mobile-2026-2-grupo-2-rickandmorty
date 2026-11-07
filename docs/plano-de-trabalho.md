@@ -108,13 +108,13 @@ lógica, ≥ 1 screenshot da sua feature para o README, e saber explicar sua par
 
 ### 2 · Vinícius Eduardo — F2 Detalhe
 
-- [ ] `useCharacter(id)` + `api/characters.ts#getById`
-- [ ] Tela de detalhe: foto grande, nome, `StatusBadge`, espécie, gênero, origem, localização atual
-- [ ] Espaço reservado para a seção "Aparece em N episódios" (o Rafael preenche)
-- [ ] `FavoriteButton` do Marcus no header
-- [ ] Ao vir da lista, mostrar nome e foto já em cache enquanto o resto carrega (`initialData` / `placeholderData`)
-- [ ] Botão compartilhar (`Share` do RN): "Conheça Rick Sanchez — Human, Alive"
-- [ ] Teste: mapeamento DTO → `CharacterDetail` (campos vazios como `type: ""` viram "—")
+- [x] `useCharacter(id)` + `api/characters.ts#getById`
+- [x] Tela de detalhe: foto grande, nome, `StatusBadge`, espécie, gênero, origem, localização atual
+- [x] Espaço reservado para a seção "Aparece em N episódios" (o Rafael preenche)
+- [x] `FavoriteButton` do Marcus no header
+- [x] Ao vir da lista, mostrar nome e foto já em cache enquanto o resto carrega (`initialData` / `placeholderData`)
+- [x] Botão compartilhar (`Share` do RN): "Conheça Rick Sanchez — Human, Alive"
+- [x] Teste: mapeamento DTO → `CharacterDetail` (campos vazios como `type: ""` viram "—")
 
 ### 3 · Guilherme Jeske — F4 Filtro + CI + Jest
 
@@ -128,7 +128,7 @@ lógica, ≥ 1 screenshot da sua feature para o README, e saber explicar sua par
 - [x] Configurar Jest (`jest-expo`) + `@testing-library/react-native` (v14: `render`/`fireEvent` são `await`)
 - [x] GitHub Actions em todo PR: `npm ci` → `tsc --noEmit` → `npm test` → `expo prebuild` → `assembleRelease` (`.github/workflows/ci.yml`, verde no PR #6)
 - [x] Gerar o APK como artefato do CI (vira o plano B da demo) — artefato `rickandmorty-apk` na aba Actions; é release assinado com a chave de debug, porque o APK debug só abre com o Metro rodando
-- [x] Conferir no fim que existem **≥ 3 casos** de teste passando (meta: 7+, um por pessoa) — 25 hoje
+- [x] Conferir no fim que existem **≥ 3 casos** de teste passando (meta: 7+, um por pessoa) — 82 hoje (10 suítes)
 
 ### 4 · Hugo Piani — F3 Busca + estados vazio/erro/offline
 
@@ -147,15 +147,15 @@ lógica, ≥ 1 screenshot da sua feature para o README, e saber explicar sua par
 ### 5 · Marcus Santos — F5 Favoritos + README
 
 **F5 — Favoritos**
-- [ ] `favoritesStore` (Zustand + `persist` + AsyncStorage), chave nova (não `favorite_pokemon_ids`)
-- [ ] Guardar um **snapshot** (id, nome, foto, status) para a aba funcionar sem internet
-- [ ] `FavoriteButton` reutilizável (detalhe e card da lista), com feedback (Snackbar "Adicionado")
-- [ ] Aba Favoritos: lista, remover com desfazer, estado vazio "Toque na ★ para salvar"
-- [ ] Badge com a contagem de favoritos no ícone da aba
-- [ ] Teste: `toggleFavorite` adiciona, remove e não duplica
+- [x] `favoritesStore` (Zustand + `persist` + AsyncStorage), chave nova (não `favorite_pokemon_ids`)
+- [x] Guardar um **snapshot** (id, nome, foto, status) para a aba funcionar sem internet
+- [x] `FavoriteButton` reutilizável (detalhe e card da lista), com feedback (Snackbar "Adicionado")
+- [x] Aba Favoritos: lista, remover com desfazer, estado vazio "Toque na ★ para salvar"
+- [x] Badge com a contagem de favoritos no ícone da aba
+- [x] Teste: `toggleFavorite` adiciona, remove e não duplica
 
 **README.md do app**
-- [ ] O que o app faz · como rodar **com o `cd rickandmorty-rn`** · como rodar os testes
+- [x] O que o app faz · como rodar **com o `cd rickandmorty-rn`** · como rodar os testes
 - [ ] **≥ 3 screenshots** (juntar os de cada um; claro e escuro) · link para o `ADR.md`
 - [ ] Testar o README do zero num clone limpo, numa máquina que não seja a sua
 
