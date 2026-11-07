@@ -1,5 +1,5 @@
 import { Fragment, useState } from 'react';
-import { IconButton, Portal, Snackbar } from 'react-native-paper';
+import { IconButton, Portal, Snackbar, useTheme } from 'react-native-paper';
 import type { CharacterSummary } from '../domain/character';
 import { useFavoritesStore } from '../stores/favoritesStore';
 
@@ -9,6 +9,7 @@ export interface FavoriteButtonProps {
 }
 
 export function FavoriteButton({ character, testID = `favorite-button-${character.id}` }: FavoriteButtonProps) {
+  const { colors } = useTheme();
   const isFavorite = useFavoritesStore((state) => Boolean(state.byId[character.id]));
   const toggle = useFavoritesStore((state) => state.toggle);
   const add = useFavoritesStore((state) => state.add);
@@ -37,6 +38,7 @@ export function FavoriteButton({ character, testID = `favorite-button-${characte
     <Fragment>
       <IconButton
         icon={isFavorite ? 'star' : 'star-outline'}
+        iconColor={isFavorite ? colors.primary : colors.onSurfaceVariant}
         onPress={handlePress}
         accessibilityLabel={isFavorite ? 'Remover dos favoritos' : 'Favoritar'}
         testID={testID}
