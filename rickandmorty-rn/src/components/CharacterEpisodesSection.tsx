@@ -3,9 +3,10 @@ import { StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../navigation/types';
-import { ActivityIndicator, Button, Card, List, Text } from 'react-native-paper';
+import { Button, Card, List, Text } from 'react-native-paper';
 import { formatAirDate } from '../domain/episode';
 import { useEpisodesByIds } from '../queries/useEpisodes';
+import { Skeleton } from './Skeleton';
 import { spacing } from '../theme/tokens';
 
 export interface CharacterEpisodesSectionProps {
@@ -35,7 +36,16 @@ export function CharacterEpisodesSection({ episodeIds }: CharacterEpisodesSectio
         titleVariant="titleMedium"
       />
       <Card.Content>
-        {query.isPending && <ActivityIndicator style={styles.loading} accessibilityLabel="Carregando episódios" />}
+        {query.isPending && (
+          <View style={styles.loading} accessibilityLabel="Carregando episódios">
+            {Array.from({ length: Math.min(total, 3) }, (_, index) => (
+              <View key={index} style={styles.skeletonRow}>
+                <Skeleton width="65%" height={14} />
+                <Skeleton width="40%" height={12} />
+              </View>
+            ))}
+          </View>
+        )}
 
         {query.isError && (
           <View style={styles.error}>
@@ -68,7 +78,8 @@ export function CharacterEpisodesSection({ episodeIds }: CharacterEpisodesSectio
 
 const styles = StyleSheet.create({
   card: { marginTop: spacing.md },
-  loading: { marginVertical: spacing.md },
+  loading: { marginVertical: spacing.sm, gap: spacing.md },
+  skeletonRow: { gap: spacing.xs + 2 },
   error: { alignItems: 'center', gap: spacing.sm },
   item: { paddingHorizontal: 0 },
 });
