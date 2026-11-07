@@ -2,17 +2,16 @@ import { useCallback, useMemo, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Button, Text } from 'react-native-paper';
 import { ApiError } from '../api/client';
-import { CharacterCard } from '../components/CharacterCard';
+import { CharacterCard, CharacterCardSkeleton } from '../components/CharacterCard';
 import { CharacterSearchBar } from '../components/CharacterSearchBar';
 import { EmptyState } from '../components/EmptyState';
 import { ErrorState } from '../components/ErrorState';
-import { Skeleton } from '../components/Skeleton';
 import { StatusFilterChips } from '../components/StatusFilterChips';
 import type { CharacterFilters, CharacterSummary } from '../domain/character';
 import { normalizeFilters } from '../domain/filters';
 import type { TabScreenProps } from '../navigation/types';
 import { useCharacters } from '../queries/useCharacters';
-import { radius, spacing } from '../theme/tokens';
+import { spacing } from '../theme/tokens';
 
 const SKELETON_ROWS = 8;
 
@@ -109,13 +108,7 @@ function ListSkeleton() {
   return (
     <View style={styles.listContent} accessibilityLabel="Carregando personagens">
       {Array.from({ length: SKELETON_ROWS }, (_, index) => (
-        <View key={index} style={styles.skeletonRow}>
-          <Skeleton width={40} height={40} />
-          <View style={styles.skeletonText}>
-            <Skeleton width="60%" height={14} />
-            <Skeleton width="35%" height={12} />
-          </View>
-        </View>
+        <CharacterCardSkeleton key={index} />
       ))}
     </View>
   );
@@ -151,16 +144,6 @@ function ListFooter({ loading, failed, reachedEnd, onRetry }: ListFooterProps) {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   listContent: { paddingVertical: spacing.sm },
-  skeletonRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.md,
-    marginHorizontal: spacing.md,
-    marginVertical: spacing.xs,
-    padding: spacing.md,
-    borderRadius: radius.md,
-  },
-  skeletonText: { flex: 1, gap: spacing.sm },
   footer: { alignItems: 'center', paddingVertical: spacing.lg },
   footerText: { textAlign: 'center' },
 });

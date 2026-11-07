@@ -171,18 +171,20 @@ lógica, ≥ 1 screenshot da sua feature para o README, e saber explicar sua par
 ### 7 · Sesaque Cruz — F7 Tema claro/escuro + design system
 
 **F7 — Tema**
-- [ ] `theme/tokens.ts`: cores, tipografia, espaçamento, raio — **um lugar só**
-- [ ] Temas Paper MD3 claro e escuro com a paleta do desenho (verde portal, ciano, fundo espacial)
-- [ ] `themeStore` persistido: Sistema · Claro · Escuro; seletor no header ou numa tela de Ajustes
-- [ ] Teste: `resolveTheme(preferencia, esquemaDoSistema)` cobre os 3 × 2 casos
+- [x] `theme/tokens.ts`: cores, tipografia, espaçamento, raio — **um lugar só**
+- [x] Temas Paper MD3 claro e escuro com a paleta do desenho (verde portal, ciano, fundo espacial)
+- [x] `themeStore` persistido: Sistema · Claro · Escuro; seletor no header das abas (`ThemeMenu`)
+- [x] Teste: `resolveTheme(preferencia, esquemaDoSistema)` cobre os 3 × 2 casos (+ sistema sem resposta)
+- [x] Teste: contraste WCAG AA de todos os pares de cor dos dois temas (`theme/contrast.test.ts`)
 
 **Design system (UI/UX vale 8 pts — é a maior fatia)**
-- [ ] `CharacterCard` e `StatusBadge` (verde/vermelho/cinza) usados por todos
-- [ ] `Skeleton` com shimmer no lugar do spinner solto
-- [ ] Placeholder e fallback nas imagens (`expo-image` com `placeholder` + `transition`)
-- [ ] Fonte própria (`@expo-google-fonts`) para títulos
-- [ ] Ícone e splash próprios (substituir os do skeleton)
-- [ ] Passada final: paisagem, fonte grande do sistema, `accessibilityLabel` nos botões de ícone
+- [x] `CharacterCard` e `StatusBadge` (verde/vermelho/cinza) usados por todos
+- [x] `Skeleton` com shimmer no lugar do spinner solto (`CharacterCardSkeleton` no mesmo formato do card)
+- [x] Placeholder e fallback nas imagens (`expo-image` com `placeholder` + `transition`)
+- [x] Fonte própria (`@expo-google-fonts`) para títulos (Fredoka)
+- [x] Ícone e splash próprios (substituir os do skeleton)
+- [x] Passada final: paisagem, fonte grande do sistema, `accessibilityLabel` nos botões de ícone
+- [x] Screenshots claro, escuro e seletor em [`docs/screenshots/`](screenshots/) para o README
 
 ---
 
