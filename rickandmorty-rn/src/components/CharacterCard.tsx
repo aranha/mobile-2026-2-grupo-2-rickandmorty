@@ -12,12 +12,13 @@ import { StatusBadge } from './StatusBadge';
 export interface CharacterCardProps {
   character: CharacterSummary;
   onPress: () => void;
+  testID?: string;
 }
 
 const AVATAR_SIZE = 64;
 
 /** Card da lista e dos favoritos: foto, nome, espécie, status e espaço para o FavoriteButton. */
-export function CharacterCard({ character, onPress }: CharacterCardProps) {
+export function CharacterCard({ character, onPress, testID = `item-card-${character.id}` }: CharacterCardProps) {
   const { colors } = useTheme();
   const [imageFailed, setImageFailed] = useState(false);
 
@@ -26,7 +27,7 @@ export function CharacterCard({ character, onPress }: CharacterCardProps) {
       mode="elevated"
       onPress={onPress}
       style={styles.card}
-      testID={`item-card-${character.id}`}
+      testID={testID}
       accessibilityLabel={`${character.name}, ${character.species}, ${statusLabels[character.status]}`}
       accessibilityHint="Abre os detalhes do personagem"
     >

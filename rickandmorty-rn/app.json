@@ -26,6 +26,7 @@
     "plugins": [
       "expo-image",
       "expo-font",
+      "expo-status-bar",
       [
         "expo-splash-screen",
         {

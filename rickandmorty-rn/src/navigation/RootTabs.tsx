@@ -5,6 +5,7 @@ import { ThemeMenu } from '../components/ThemeMenu';
 import { CharactersScreen } from '../screens/CharactersScreen';
 import { EpisodesScreen } from '../screens/EpisodesScreen';
 import { FavoritesScreen } from '../screens/FavoritesScreen';
+import { useFavoritesStore } from '../stores/favoritesStore';
 import type { TabParamList } from './types';
 
 const Tab = createBottomTabNavigator<TabParamList>();
@@ -16,6 +17,8 @@ const tabIcon =
   ({ color, size }: { color: string; size: number }) => <MaterialCommunityIcons name={name} color={color} size={size} />;
 
 export function RootTabs() {
+  const favoriteCount = useFavoritesStore((state) => Object.keys(state.byId).length);
+
   return (
     <Tab.Navigator screenOptions={{ headerRight: () => <ThemeMenu /> }}>
       <Tab.Screen
@@ -31,7 +34,12 @@ export function RootTabs() {
       <Tab.Screen
         name="Favorites"
         component={FavoritesScreen}
-        options={{ title: 'Favoritos', tabBarIcon: tabIcon('star'), tabBarButtonTestID: 'tab-favorites' }}
+        options={{
+          title: 'Favoritos',
+          tabBarIcon: tabIcon('star'),
+          tabBarButtonTestID: 'tab-favorites',
+          tabBarBadge: favoriteCount || undefined,
+        }}
       />
     </Tab.Navigator>
   );

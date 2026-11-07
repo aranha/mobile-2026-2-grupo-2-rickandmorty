@@ -119,16 +119,16 @@ lógica, ≥ 1 screenshot da sua feature para o README, e saber explicar sua par
 ### 3 · Guilherme Jeske — F4 Filtro + CI + Jest
 
 **F4 — Filtro**
-- [ ] Chips Todos · Alive · Dead · unknown no topo da lista (`SegmentedButtons` ou `Chip` do Paper)
-- [ ] Filtro vai para `useCharacters({ status })` — filtro **na API**, não na página carregada
-- [ ] Funciona combinado com a busca do Hugo (`?name=rick&status=dead`)
-- [ ] Teste: `buildCharacterQuery(filters, page)` monta os parâmetros certos (vazio, só status, os dois, nome só com espaços)
+- [x] Chips Todos · Vivos · Mortos · Desconhecido no topo da lista (`Chip` do Paper, testID `category-chip-<status>`)
+- [x] Filtro vai para `useCharacters({ status })` — filtro **na API**, não na página carregada
+- [x] Funciona combinado com a busca do Hugo (`?name=rick&status=dead`) — falta só o campo de busca (F3)
+- [x] Teste: `buildCharacterQuery(filters, page)` monta os parâmetros certos (vazio, só status, os dois, nome só com espaços)
 
 **CI e testes (para o grupo inteiro)**
-- [ ] Configurar Jest (`jest-expo`) + `@testing-library/react-native` no PR #1 ou logo depois
-- [ ] GitHub Actions em todo PR: `npm ci` → `tsc --noEmit` → `npm test` → `expo prebuild` → `assembleDebug`
-- [ ] Gerar o APK debug como artefato do CI (vira o plano B da demo)
-- [ ] Conferir no fim que existem **≥ 3 casos** de teste passando (meta: 7+, um por pessoa)
+- [x] Configurar Jest (`jest-expo`) + `@testing-library/react-native` (v14: `render`/`fireEvent` são `await`)
+- [x] GitHub Actions em todo PR: `npm ci` → `tsc --noEmit` → `npm test` → `expo prebuild` → `assembleRelease` (`.github/workflows/ci.yml`, verde no PR #6)
+- [x] Gerar o APK como artefato do CI (vira o plano B da demo) — artefato `rickandmorty-apk` na aba Actions; é release assinado com a chave de debug, porque o APK debug só abre com o Metro rodando
+- [x] Conferir no fim que existem **≥ 3 casos** de teste passando (meta: 7+, um por pessoa) — 25 hoje
 
 ### 4 · Hugo Piani — F3 Busca + estados vazio/erro/offline
 
