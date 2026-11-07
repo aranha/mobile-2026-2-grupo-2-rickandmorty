@@ -1,41 +1,94 @@
 # Rick and Morty — app
 
-> README provisório do scaffold. A versão final (o que o app faz, ≥ 3 screenshots, link do `ADR.md`)
-> é a tarefa do Marcus — ver [`docs/plano-de-trabalho.md`](../docs/plano-de-trabalho.md).
+Aplicativo mobile em React Native com Expo para explorar personagens e episódios
+de Rick and Morty. É possível pesquisar e filtrar personagens, abrir detalhes,
+consultar episódios, alternar o tema e salvar favoritos localmente para acessar
+mesmo sem internet.
+
+## Pré-requisitos
+
+- Node.js LTS e npm
+- Android Studio com um emulador Android configurado (para Android)
+- Xcode e CocoaPods (para iOS, somente macOS)
 
 ## Como rodar
+
+A partir da raiz do repositório:
 
 ```bash
 cd rickandmorty-rn
 npm install
-npx expo run:android   # a primeira vez compila o projeto nativo; precisa de emulador aberto
+npm start
 ```
 
-Antes de abrir PR:
+No terminal do Expo, escolha uma plataforma. Também é possível executar
+diretamente:
+
+```bash
+npm run android # emulador Android aberto
+npm run ios     # macOS + simulador iOS
+npm run web
+```
+
+`npm run android` faz a primeira compilação nativa e pode levar alguns minutos.
+O app usa a Rick and Morty API, portanto a lista, a busca, os filtros e os
+detalhes precisam de internet. Favoritos já salvos continuam disponíveis offline.
+
+## Testes e validação
 
 ```bash
 npm run typecheck
-npx expo prebuild --platform android   # se não buildar, a Funcionalidade zera
+npm test -- --runInBand
+npx expo prebuild --platform android
 ```
 
-## Onde fica cada coisa
+O `typecheck` valida o TypeScript. O teste unitário da store cobre adição,
+remoção e ausência de duplicatas. O `prebuild` verifica que o projeto nativo
+Android pode ser gerado; ele não substitui a compilação em um emulador.
 
-```
+## Funcionalidades
+
+- Lista paginada de personagens com pull-to-refresh.
+- Busca por nome e filtro por status.
+- Tela de detalhe com informações, episódios relacionados e compartilhamento.
+- Aba de episódios com navegação para os personagens.
+- Favoritos persistidos em AsyncStorage, com snapshot de nome, foto e status,
+  contador na aba e remoção com desfazer.
+- Tema claro/escuro e componentes visuais compartilhados.
+
+## Arquitetura
+
+```text
 src/
-  api/          HTTP + formato cru da API (dto.ts) → modelos de domain/
-  domain/       tipos e funções puras — é aqui que moram os testes
-  queries/      hooks do TanStack Query (estado do servidor)
-  stores/       Zustand (favoritos e tema — estado do cliente)
-  theme/        tokens, temas claro/escuro do Paper
-  components/   peças reutilizáveis
-  screens/      só UI: nenhuma tela chama fetch
-  navigation/   abas + stack dos detalhes
+  api/          HTTP e DTOs da API
+  domain/       tipos e funções puras
+  queries/      estado do servidor com TanStack Query
+  stores/       estado local com Zustand (favoritos e tema)
+  theme/        tokens e temas do React Native Paper
+  components/   componentes reutilizáveis
+  screens/      UI; as telas não fazem fetch diretamente
+  navigation/   abas e stack dos detalhes
 ```
 
-## Onde está a minha parte
+O estado vindo da API fica no TanStack Query; escolhas do usuário, como
+favoritos e tema, ficam no Zustand. A decisão arquitetural completa, incluindo
+alternativas consideradas, está em [`ADR.md`](ADR.md).
 
-Cada pendência está marcada com `TODO(F<n> · <nome>)`:
+## Screenshots
 
-```bash
-grep -rn "TODO(F3" src   # troque F3 pela sua feature
-```
+As capturas finais devem ser atualizadas após a integração em um emulador ou
+dispositivo e mantidas em `assets/screenshots/`. O conjunto esperado para a
+entrega inclui pelo menos:
+
+1. Lista ou detalhe de personagem.
+2. Aba Favoritos com um personagem salvo.
+3. Tema claro e escuro (ou uma captura comparativa dos dois estados).
+
+Use nomes estáveis (`characters.png`, `favorites.png` e `themes.png`) para que
+o README possa referenciá-las sem alterações adicionais.
+
+## Estrutura de pastas
+
+O app mantém a separação `screens → queries/stores → api → domain`. Isso permite
+que cada feature evolua sem duplicar fetch, cache ou regras de mapeamento e
+mantém os testes independentes da rede.
