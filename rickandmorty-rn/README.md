@@ -76,16 +76,15 @@ alternativas consideradas, está em [`ADR.md`](ADR.md).
 
 ## Screenshots
 
-As capturas finais devem ser atualizadas após a integração em um emulador ou
-dispositivo e mantidas em `assets/screenshots/`. O conjunto esperado para a
-entrega inclui pelo menos:
+Capturas do APK de release no emulador Android (API 35), nos temas claro e escuro.
+Os arquivos ficam em [`docs/screenshots/`](../docs/screenshots/).
 
-1. Lista ou detalhe de personagem.
-2. Aba Favoritos com um personagem salvo.
-3. Tema claro e escuro (ou uma captura comparativa dos dois estados).
-
-Use nomes estáveis (`characters.png`, `favorites.png` e `themes.png`) para que
-o README possa referenciá-las sem alterações adicionais.
+| | Claro | Escuro |
+|---|---|---|
+| **Personagens** (lista, filtro e favoritos) | <img src="../docs/screenshots/f7-tema-claro.png" width="220"> | <img src="../docs/screenshots/f7-tema-escuro.png" width="220"> |
+| **Detalhe** do personagem | <img src="../docs/screenshots/f7-detalhe-claro.png" width="220"> | <img src="../docs/screenshots/f7-detalhe-escuro.png" width="220"> |
+| **Episódios** por temporada | <img src="../docs/screenshots/f7-episodios-claro.png" width="220"> | <img src="../docs/screenshots/f7-episodios-escuro.png" width="220"> |
+| **Favoritos** salvos | <img src="../docs/screenshots/f7-favoritos-claro.png" width="220"> | <img src="../docs/screenshots/f7-favoritos-escuro.png" width="220"> |
 
 ## Estrutura de pastas
 

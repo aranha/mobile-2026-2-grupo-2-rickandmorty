@@ -1,8 +1,9 @@
 import { useCallback, useLayoutEffect } from 'react';
 import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 import { Image } from 'expo-image';
-import { ActivityIndicator, Chip, Divider, Text, useTheme } from 'react-native-paper';
+import { Chip, Divider, Text, useTheme } from 'react-native-paper';
 import { ErrorState } from '../components/ErrorState';
+import { Skeleton } from '../components/Skeleton';
 import type { CharacterSummary } from '../domain/character';
 import { formatAirDate, type Episode } from '../domain/episode';
 import type { RootScreenProps } from '../navigation/types';
@@ -30,8 +31,15 @@ export function EpisodeDetailScreen({ route, navigation }: RootScreenProps<'Epis
 
   if (episodeQuery.isPending) {
     return (
-      <View style={styles.center}>
-        <ActivityIndicator size="large" accessibilityLabel="Carregando episódio" />
+      <View style={styles.content} accessibilityLabel="Carregando episódio">
+        <View style={styles.header}>
+          <Skeleton width="75%" height={26} />
+          <View style={styles.chips}>
+            <Skeleton width={190} height={32} borderRadius={radius.sm} />
+            <Skeleton width={120} height={32} borderRadius={radius.sm} />
+          </View>
+        </View>
+        <TileGridSkeleton />
       </View>
     );
   }
@@ -53,7 +61,7 @@ export function EpisodeDetailScreen({ route, navigation }: RootScreenProps<'Epis
         charactersQuery.isError ? (
           <ErrorState message="Não deu para carregar os personagens." onRetry={() => charactersQuery.refetch()} />
         ) : (
-          <ActivityIndicator style={styles.gridLoading} accessibilityLabel="Carregando personagens" />
+          <TileGridSkeleton />
         )
       }
     />
@@ -82,6 +90,22 @@ function EpisodeHeader({ episode }: { episode: Episode }) {
   );
 }
 
+/** Grade no formato dos tiles de personagem, enquanto a segunda consulta carrega. */
+function TileGridSkeleton() {
+  return (
+    <View style={styles.grid} accessibilityLabel="Carregando personagens">
+      {Array.from({ length: COLUMNS * 2 }, (_, index) => (
+        <View key={index} style={styles.tile}>
+          <Skeleton width="100%" height={96} borderRadius={radius.md} />
+          <View style={styles.tileName}>
+            <Skeleton width="70%" height={12} />
+          </View>
+        </View>
+      ))}
+    </View>
+  );
+}
+
 function CharacterTile({ character, onPress }: { character: CharacterSummary; onPress: () => void }) {
   const { colors } = useTheme();
   return (
@@ -106,14 +130,14 @@ function CharacterTile({ character, onPress }: { character: CharacterSummary; on
 
 const styles = StyleSheet.create({
   content: { padding: spacing.md, paddingBottom: spacing.xl },
-  center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   header: { marginBottom: spacing.md },
-  title: { fontWeight: 'bold', marginBottom: spacing.sm },
+  // Sem fontWeight: o headlineSmall já usa a Fredoka do tema, e um peso extra faz o Android cair na fonte do sistema.
+  title: { marginBottom: spacing.sm },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },
   divider: { marginVertical: spacing.md },
   // Largura fixa de 1/3: a última linha incompleta não estica os itens.
   tile: { width: `${100 / COLUMNS}%`, alignItems: 'center', padding: spacing.xs, marginBottom: spacing.sm },
   avatar: { width: '100%', aspectRatio: 1, borderRadius: radius.md },
   tileName: { textAlign: 'center', marginTop: spacing.xs },
-  gridLoading: { marginTop: spacing.lg },
+  grid: { flexDirection: 'row', flexWrap: 'wrap' },
 });
