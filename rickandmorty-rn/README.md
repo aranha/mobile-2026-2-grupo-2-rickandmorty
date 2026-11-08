@@ -88,9 +88,9 @@ Capturas do APK de release no emulador Android (API 35). Os arquivos ficam em
 | **F4 · Filtro** por status, na API | Guilherme | <img src="../docs/screenshots/f4-filtro-mortos.png" width="200"> |
 | **F5 · Favoritos** com desfazer, salvos no aparelho | Marcus | <img src="../docs/screenshots/f5-favoritar.png" width="200"> <img src="../docs/screenshots/f7-favoritos-claro.png" width="200"> |
 | **F6 · Episódios** por temporada, detalhe e "Aparece em N episódios" | Rafael | <img src="../docs/screenshots/f7-episodios-claro.png" width="200"> <img src="../docs/screenshots/f6-episodio-detalhe.png" width="200"> <img src="../docs/screenshots/f6-aparece-em.png" width="200"> |
-| **F7 · Tema** Sistema, Claro e Escuro + design system | Sesaque | <img src="../docs/screenshots/f7-seletor-tema.png" width="200"> |
+| **F7 · Tema** Sistema, Claro e Escuro + design system | Sesaque | <img src="../docs/screenshots/f7-seletor-tema.png" width="200"> <img src="../docs/screenshots/f7-detalhe-escuro.png" width="200"> <img src="../docs/screenshots/f7-episodios-escuro.png" width="200"> |
 
-### Tema claro e escuro
+### F7 · Tema claro e escuro em todas as telas
 
 | | Claro | Escuro |
 |---|---|---|
