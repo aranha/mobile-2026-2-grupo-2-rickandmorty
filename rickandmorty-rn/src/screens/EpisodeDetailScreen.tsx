@@ -45,7 +45,13 @@ export function EpisodeDetailScreen({ route, navigation }: RootScreenProps<'Epis
   }
 
   if (!episode) {
-    return <ErrorState message="Não foi possível carregar o episódio." onRetry={() => episodeQuery.refetch()} />;
+    return (
+      <ErrorState
+        message="Não foi possível carregar o episódio."
+        error={episodeQuery.error}
+        onRetry={() => episodeQuery.refetch()}
+      />
+    );
   }
 
   return (
@@ -59,7 +65,11 @@ export function EpisodeDetailScreen({ route, navigation }: RootScreenProps<'Epis
       renderItem={({ item }) => <CharacterTile character={item} onPress={() => openCharacter(item)} />}
       ListEmptyComponent={
         charactersQuery.isError ? (
-          <ErrorState message="Não deu para carregar os personagens." onRetry={() => charactersQuery.refetch()} />
+          <ErrorState
+            message="Não deu para carregar os personagens."
+            error={charactersQuery.error}
+            onRetry={() => charactersQuery.refetch()}
+          />
         ) : (
           <TileGridSkeleton />
         )

@@ -1,6 +1,8 @@
 import type { ComponentProps } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { OfflineBanner } from '../components/OfflineBanner';
 import { ThemeMenu } from '../components/ThemeMenu';
 import { CharactersScreen } from '../screens/CharactersScreen';
 import { EpisodesScreen } from '../screens/EpisodesScreen';
@@ -20,7 +22,16 @@ export function RootTabs() {
   const favoriteCount = useFavoritesStore((state) => Object.keys(state.byId).length);
 
   return (
-    <Tab.Navigator screenOptions={{ headerRight: () => <ThemeMenu /> }}>
+    <Tab.Navigator
+      screenOptions={{ headerRight: () => <ThemeMenu /> }}
+      // Banner de sem internet logo abaixo do header, em todas as abas.
+      screenLayout={({ children }) => (
+        <View style={styles.screen}>
+          <OfflineBanner />
+          {children}
+        </View>
+      )}
+    >
       <Tab.Screen
         name="Characters"
         component={CharactersScreen}
@@ -44,3 +55,7 @@ export function RootTabs() {
     </Tab.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  screen: { flex: 1 },
+});

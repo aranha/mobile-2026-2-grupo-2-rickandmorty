@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
+import { onlineManager } from '@tanstack/react-query';
 import { ActivityIndicator, Button, Text } from 'react-native-paper';
-import { ApiError } from '../api/client';
 import { CharacterCard, CharacterCardSkeleton } from '../components/CharacterCard';
 import { CharacterSearchBar } from '../components/CharacterSearchBar';
 import { EmptyState } from '../components/EmptyState';
@@ -44,23 +44,30 @@ export function CharactersScreen({ navigation }: TabScreenProps<'Characters'>) {
   const refresh = useCallback(async () => {
     setRefreshing(true);
     try {
-      await refetch();
+      // Offline o refetch fica pausado até a rede voltar; o banner já avisa, então o spinner não fica preso.
+      if (onlineManager.isOnline()) await refetch();
     } finally {
       setRefreshing(false);
     }
   }, [refetch]);
 
-  // Mesmo critério do useCharacters: nome só com espaços não conta como filtro.
-  const hasFilters = Object.keys(normalizeFilters(filters)).length > 0;
+  // Mesmo critério do useCharacters: nome só com espaços não conta como busca.
+  const searchedName = normalizeFilters(filters).name;
 
   let content;
   if (query.isPending) {
     content = <ListSkeleton />;
   } else if (query.isError && characters.length === 0) {
-    content = <ErrorState message={errorMessage(query.error)} onRetry={() => refetch()} />;
+    content = (
+      <ErrorState message="Não foi possível carregar os personagens." error={query.error} onRetry={() => refetch()} />
+    );
   } else if (characters.length === 0) {
-    content = hasFilters ? (
-      <EmptyState title="Nenhum personagem com esses filtros" description="Tente outro nome ou outro status." />
+    content = searchedName ? (
+      <EmptyState
+        icon="account-search-outline"
+        title="Nenhum personagem com esse nome"
+        description={`Nada encontrado para "${searchedName}". Tente outro nome ou outro status.`}
+      />
     ) : (
       <EmptyState title="Nenhum personagem por aqui" description="Puxe para baixo para tentar de novo." />
     );
@@ -97,10 +104,6 @@ export function CharactersScreen({ navigation }: TabScreenProps<'Characters'>) {
       {content}
     </View>
   );
-}
-
-function errorMessage(error: Error): string {
-  return error instanceof ApiError ? error.message : 'Não foi possível carregar os personagens.';
 }
 
 /** Mesmo formato do card, para a tela não "pular" quando os dados chegam. */

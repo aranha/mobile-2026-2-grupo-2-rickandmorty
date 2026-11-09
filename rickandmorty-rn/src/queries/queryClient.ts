@@ -1,5 +1,11 @@
-import { QueryClient } from '@tanstack/react-query';
+import NetInfo from '@react-native-community/netinfo';
+import { QueryClient, onlineManager } from '@tanstack/react-query';
 import { ApiError } from '../api/client';
+
+// Sem internet, o TanStack pausa as consultas em vez de errar, e retoma sozinho quando a rede volta.
+onlineManager.setEventListener((setOnline) =>
+  NetInfo.addEventListener((state) => setOnline(state.isConnected !== false)),
+);
 
 export const queryClient = new QueryClient({
   defaultOptions: {

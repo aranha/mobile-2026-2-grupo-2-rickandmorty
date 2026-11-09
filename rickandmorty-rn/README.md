@@ -49,7 +49,8 @@ Android pode ser gerado; ele não substitui a compilação em um emulador.
 ## Funcionalidades
 
 - Lista paginada de personagens com pull-to-refresh.
-- Busca por nome e filtro por status.
+- Busca por nome (com debounce) e filtro por status.
+- Estados de carregando, vazio, erro com "Tentar de novo" e aviso de sem internet.
 - Tela de detalhe com informações, episódios relacionados e compartilhamento.
 - Aba de episódios com navegação para os personagens.
 - Favoritos persistidos em AsyncStorage, com snapshot de nome, foto e status,
@@ -85,6 +86,7 @@ Capturas do APK de release no emulador Android (API 35). Os arquivos ficam em
 |---|---|---|
 | **F1 · Lista** de personagens com scroll infinito | Paulo | <img src="../docs/screenshots/f7-tema-claro.png" width="200"> |
 | **F2 · Detalhe** do personagem | Vinícius | <img src="../docs/screenshots/f7-detalhe-claro.png" width="200"> |
+| **F3 · Busca** por nome + estados vazio, erro e sem internet | Hugo | <img src="../docs/screenshots/f3-busca-claro.png" width="200"> <img src="../docs/screenshots/f3-vazio-escuro.png" width="200"> <img src="../docs/screenshots/f3-erro-claro.png" width="200"> <img src="../docs/screenshots/f3-offline-escuro.png" width="200"> |
 | **F4 · Filtro** por status, na API | Guilherme | <img src="../docs/screenshots/f4-filtro-mortos.png" width="200"> |
 | **F5 · Favoritos** com desfazer, salvos no aparelho | Marcus | <img src="../docs/screenshots/f5-favoritar.png" width="200"> <img src="../docs/screenshots/f7-favoritos-claro.png" width="200"> |
 | **F6 · Episódios** por temporada, detalhe e "Aparece em N episódios" | Rafael | <img src="../docs/screenshots/f7-episodios-claro.png" width="200"> <img src="../docs/screenshots/f6-episodio-detalhe.png" width="200"> <img src="../docs/screenshots/f6-aparece-em.png" width="200"> |

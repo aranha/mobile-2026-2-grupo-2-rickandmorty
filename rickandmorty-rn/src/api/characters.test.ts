@@ -1,8 +1,10 @@
 import {
+  getCharacters,
   toCharacterPage,
   toCharacterSummary,
   toCharacterDetail,
 } from './characters';
+import { ApiError } from './client';
 import type { CharacterDto, PageDto } from './dto';
 
 // Rick Sanchez como a API devolve (só os campos que importam aqui).
@@ -102,5 +104,31 @@ describe('F2 - toCharacterDetail', () => {
     );
 
     expect(detail.episodeIds).toEqual([1, 2]);
+  });
+});
+
+describe('F3 - getCharacters (busca)', () => {
+  function mockFetch(status: number, body: unknown = { error: 'There is nothing here' }) {
+    global.fetch = jest.fn().mockResolvedValue({ ok: status < 400, status, json: async () => body }) as unknown as typeof fetch;
+  }
+
+  it('busca sem resultado (404) vira página vazia, não erro', async () => {
+    mockFetch(404);
+
+    await expect(getCharacters({ name: 'xyzxyz' }, 1)).resolves.toEqual({ items: [], nextPage: null });
+  });
+
+  it('erro 500 continua sendo erro', async () => {
+    mockFetch(500);
+
+    const error = await getCharacters({ name: 'rick' }, 1).catch((e: unknown) => e);
+    expect(error).toBeInstanceOf(ApiError);
+    expect(error).toMatchObject({ kind: 'http', status: 500 });
+  });
+
+  it('com resultado, devolve a página mapeada', async () => {
+    mockFetch(200, pageDto(null));
+
+    await expect(getCharacters({ name: 'rick' }, 1)).resolves.toMatchObject({ items: [{ id: 1 }], nextPage: null });
   });
 });

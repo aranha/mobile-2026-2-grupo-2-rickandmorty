@@ -9,5 +9,7 @@ appId: com.puciec.rickmortyfinal
 - tapOn:
     id: "search-input"
 - inputText: "summer"
+- assertNotVisible:
+    id: "item-card-1"
 - assertVisible:
     id: "item-card-3"
