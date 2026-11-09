@@ -40,9 +40,7 @@ export function toCharacterPage(dto: PageDto<CharacterDto>): Page<CharacterSumma
   };
 }
 
-// TODO(F2 · Vinícius): CharacterDto → CharacterDetail. Texto vazio da API ("type": "") vira "—";
-// episode[] vira episodeIds com idsFromUrls (domain/ids.ts, do Rafael).
-
+/** Texto vazio da API ("type": "") vira "—"; episode[] vira episodeIds. */
 export function toCharacterDetail(dto: CharacterDto): CharacterDetail {
   const textOrDash = (value: string): string =>
     value.trim() || '—';
