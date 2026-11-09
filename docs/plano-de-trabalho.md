@@ -133,16 +133,17 @@ lógica, ≥ 1 screenshot da sua feature para o README, e saber explicar sua par
 ### 4 · Hugo Piani — F3 Busca + estados vazio/erro/offline
 
 **F3 — Busca**
-- [ ] Campo de busca (`Searchbar` do Paper) acima da lista
-- [ ] Debounce de ~400 ms antes de chamar `useCharacters({ name })`
-- [ ] Busca sem resultado (404 da API) → `EmptyState` "Nenhum personagem com esse nome"
-- [ ] Teste: `api/characters` transforma 404 em lista vazia, e 500 continua sendo erro
+- [x] Campo de busca (`Searchbar` do Paper) acima da lista (testID `search-input`)
+- [x] Debounce de ~400 ms antes de chamar `useCharacters({ name })` (`hooks/useDebouncedValue.ts`)
+- [x] Busca sem resultado (404 da API) → `EmptyState` "Nenhum personagem com esse nome"
+- [x] Teste: `api/characters` transforma 404 em lista vazia, e 500 continua sendo erro
 
 **Estados (todas as telas usam)**
-- [ ] `ErrorState` com mensagem clara e botão "Tentar de novo" (`refetch`)
-- [ ] `EmptyState` com ilustração/ícone e texto por contexto
-- [ ] Banner de sem internet (`@react-native-community/netinfo`) + `onlineManager` do TanStack Query
-- [ ] Teste: hook de debounce (só emite o último valor após o atraso)
+- [x] `ErrorState` com mensagem clara e botão "Tentar de novo" (`refetch`) — ícone e título pelo tipo de `ApiError` (sem internet / API com erro)
+- [x] `EmptyState` com ilustração/ícone e texto por contexto
+- [x] Banner de sem internet (`@react-native-community/netinfo`) + `onlineManager` do TanStack Query — no topo das abas; a consulta pausa e retoma sozinha
+- [x] Teste: hook de debounce (só emite o último valor após o atraso)
+- [x] Screenshots de busca, vazio, erro e sem internet em [`docs/screenshots/`](screenshots/) para o README
 
 ### 5 · Marcus Santos — F5 Favoritos + README
 
