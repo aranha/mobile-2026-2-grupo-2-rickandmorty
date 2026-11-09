@@ -46,6 +46,7 @@ rickandmorty-rn/src/
   api/          client.ts · characters.ts · episodes.ts       ← só HTTP + DTO → modelo
   domain/       character.ts · episode.ts · filters.ts        ← tipos + funções puras (o que se testa)
   queries/      useCharacters · useCharacter · useEpisodes…   ← hooks TanStack Query
+  hooks/        useDebouncedValue                             ← hooks de UI sem rede
   stores/       favoritesStore.ts · themeStore.ts             ← Zustand + persist
   theme/        tokens.ts · paperThemes.ts · ThemeProvider    ← cores/tipo/espaço em um lugar só
   components/   CharacterCard · StatusBadge · Skeleton · ErrorState · EmptyState · FavoriteButton
