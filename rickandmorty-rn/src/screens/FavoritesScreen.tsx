@@ -20,7 +20,11 @@ export function FavoritesScreen({ navigation }: TabScreenProps<'Favorites'>) {
   if (favorites.length === 0) {
     return (
       <View testID="favorites-empty-state" style={styles.empty}>
-        <EmptyState title="Nenhum favorito ainda" description="Toque na ★ de um personagem para salvar aqui." />
+        <EmptyState
+          icon="star-outline"
+          title="Nenhum favorito ainda"
+          description="Toque na ★ de um personagem para salvar aqui."
+        />
       </View>
     );
   }

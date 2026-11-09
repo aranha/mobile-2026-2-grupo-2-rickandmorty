@@ -1,7 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import { SectionList, StyleSheet, View } from 'react-native';
 import { List, Text, useTheme } from 'react-native-paper';
-import { ApiError } from '../api/client';
 import { EmptyState } from '../components/EmptyState';
 import { ErrorState } from '../components/ErrorState';
 import { Skeleton } from '../components/Skeleton';
@@ -67,8 +66,7 @@ export function EpisodesScreen({ navigation }: TabScreenProps<'Episodes'>) {
   if (query.isPending) return <EpisodesSkeleton />;
 
   if (query.isError && sections.length === 0) {
-    const message = query.error instanceof ApiError ? query.error.message : 'Não foi possível carregar os episódios.';
-    return <ErrorState message={message} onRetry={() => refetch()} />;
+    return <ErrorState message="Não foi possível carregar os episódios." error={query.error} onRetry={() => refetch()} />;
   }
 
   if (sections.length === 0) return <EmptyState title="Nenhum episódio por aqui" />;

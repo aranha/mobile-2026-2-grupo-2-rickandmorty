@@ -73,6 +73,7 @@ export function CharacterDetailScreen({
     return (
       <ErrorState
         message="Não foi possível carregar o personagem."
+        error={query.error}
         onRetry={() => query.refetch()}
       />
     );
