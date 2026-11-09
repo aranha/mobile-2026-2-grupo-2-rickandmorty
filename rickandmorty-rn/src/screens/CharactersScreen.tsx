@@ -1,7 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Button, Text } from 'react-native-paper';
-import { ApiError } from '../api/client';
 import { CharacterCard, CharacterCardSkeleton } from '../components/CharacterCard';
 import { CharacterSearchBar } from '../components/CharacterSearchBar';
 import { EmptyState } from '../components/EmptyState';
@@ -23,6 +22,9 @@ export function CharactersScreen({ navigation }: TabScreenProps<'Characters'>) {
   const { fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = query;
 
   const characters = useMemo(() => query.data?.pages.flatMap((page) => page.items) ?? [], [query.data]);
+
+  // Estável: a busca chama onSearch num efeito, e uma função nova a cada render dispararia de novo.
+  const search = useCallback((name: string) => setFilters((current) => ({ ...current, name })), []);
 
   const openDetail = useCallback(
     (character: CharacterSummary) =>
@@ -50,17 +52,23 @@ export function CharactersScreen({ navigation }: TabScreenProps<'Characters'>) {
     }
   }, [refetch]);
 
-  // Mesmo critério do useCharacters: nome só com espaços não conta como filtro.
-  const hasFilters = Object.keys(normalizeFilters(filters)).length > 0;
+  // Mesmo critério do useCharacters: nome só com espaços não conta como busca.
+  const searchedName = normalizeFilters(filters).name;
 
   let content;
   if (query.isPending) {
     content = <ListSkeleton />;
   } else if (query.isError && characters.length === 0) {
-    content = <ErrorState message={errorMessage(query.error)} onRetry={() => refetch()} />;
+    content = (
+      <ErrorState message="Não foi possível carregar os personagens." error={query.error} onRetry={() => refetch()} />
+    );
   } else if (characters.length === 0) {
-    content = hasFilters ? (
-      <EmptyState title="Nenhum personagem com esses filtros" description="Tente outro nome ou outro status." />
+    content = searchedName ? (
+      <EmptyState
+        icon="account-search-outline"
+        title="Nenhum personagem com esse nome"
+        description={`Nada encontrado para "${searchedName}". Tente outro nome ou outro status.`}
+      />
     ) : (
       <EmptyState title="Nenhum personagem por aqui" description="Puxe para baixo para tentar de novo." />
     );
@@ -89,7 +97,7 @@ export function CharactersScreen({ navigation }: TabScreenProps<'Characters'>) {
 
   return (
     <View testID="item-list-screen" style={styles.container}>
-      <CharacterSearchBar onSearch={(name) => setFilters((current) => ({ ...current, name }))} />
+      <CharacterSearchBar onSearch={search} />
       <StatusFilterChips
         value={filters.status}
         onChange={(status) => setFilters((current) => ({ ...current, status }))}
@@ -97,10 +105,6 @@ export function CharactersScreen({ navigation }: TabScreenProps<'Characters'>) {
       {content}
     </View>
   );
-}
-
-function errorMessage(error: Error): string {
-  return error instanceof ApiError ? error.message : 'Não foi possível carregar os personagens.';
 }
 
 /** Mesmo formato do card, para a tela não "pular" quando os dados chegam. */
