@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import { SectionList, StyleSheet, View } from 'react-native';
+import { onlineManager } from '@tanstack/react-query';
 import { List, Text, useTheme } from 'react-native-paper';
 import { EmptyState } from '../components/EmptyState';
 import { ErrorState } from '../components/ErrorState';
@@ -57,7 +58,8 @@ export function EpisodesScreen({ navigation }: TabScreenProps<'Episodes'>) {
   const refresh = useCallback(async () => {
     setRefreshing(true);
     try {
-      await refetch();
+      // Offline o refetch fica pausado até a rede voltar; o banner já avisa, então o spinner não fica preso.
+      if (onlineManager.isOnline()) await refetch();
     } finally {
       setRefreshing(false);
     }

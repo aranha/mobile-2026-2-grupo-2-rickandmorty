@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
+import { onlineManager } from '@tanstack/react-query';
 import { ActivityIndicator, Button, Text } from 'react-native-paper';
 import { CharacterCard, CharacterCardSkeleton } from '../components/CharacterCard';
 import { CharacterSearchBar } from '../components/CharacterSearchBar';
@@ -43,7 +44,8 @@ export function CharactersScreen({ navigation }: TabScreenProps<'Characters'>) {
   const refresh = useCallback(async () => {
     setRefreshing(true);
     try {
-      await refetch();
+      // Offline o refetch fica pausado até a rede voltar; o banner já avisa, então o spinner não fica preso.
+      if (onlineManager.isOnline()) await refetch();
     } finally {
       setRefreshing(false);
     }
