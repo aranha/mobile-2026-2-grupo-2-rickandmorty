@@ -1,12 +1,14 @@
+import type { ComponentProps } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Icon, Text, useTheme } from 'react-native-paper';
 import { spacing } from '../theme/tokens';
 
 export interface EmptyStateProps {
   title: string;
   description?: string;
-  /** Ícone do MaterialCommunityIcons que combina com o contexto (ex.: busca, favoritos). */
-  icon?: string;
+  /** Ícone que combina com o contexto (ex.: busca, favoritos). */
+  icon?: ComponentProps<typeof MaterialCommunityIcons>['name'];
 }
 
 export function EmptyState({ title, description, icon = 'ufo-outline' }: EmptyStateProps) {
