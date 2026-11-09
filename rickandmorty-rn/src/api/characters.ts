@@ -1,4 +1,4 @@
-import { getJson } from './client';
+import { ApiError, getJson } from './client';
 import type { CharacterDto, PageDto } from './dto';
 import type {
   CharacterDetail,
@@ -65,9 +65,14 @@ export async function getCharacters(
   page: number,
   signal?: AbortSignal,
 ): Promise<Page<CharacterSummary>> {
-  // TODO(F3 · Hugo): busca sem resultado responde 404 → devolver página vazia, não erro.
-  const dto = await getJson<PageDto<CharacterDto>>('/character', buildCharacterQuery(filters, page), signal);
-  return toCharacterPage(dto);
+  try {
+    const dto = await getJson<PageDto<CharacterDto>>('/character', buildCharacterQuery(filters, page), signal);
+    return toCharacterPage(dto);
+  } catch (error) {
+    // Busca sem resultado responde 404: para a lista isso é "vazio", não erro.
+    if (error instanceof ApiError && error.kind === 'not-found') return { items: [], nextPage: null };
+    throw error;
+  }
 }
 
 export async function getCharacter(id: number, signal?: AbortSignal): Promise<CharacterDetail> {
