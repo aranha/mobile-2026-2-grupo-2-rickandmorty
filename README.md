@@ -1,28 +1,119 @@
-# Rick and Morty — Projeto Final · Grupo 2
+# Rick and Morty — app
 
-App mobile em **React Native (Expo)** com os personagens e episódios de
-[Rick and Morty](https://rickandmortyapi.com). Projeto Final da disciplina
-Arquitetura de Aplicações Móveis e Multiplataforma (PUC Minas · IEC).
+Aplicativo mobile em React Native com Expo para explorar personagens e episódios
+de Rick and Morty. É possível pesquisar e filtrar personagens, abrir detalhes,
+consultar episódios, alternar o tema e salvar favoritos localmente para acessar
+mesmo sem internet.
 
-| | |
-|---|---|
-| App | [`rickandmorty-rn/`](rickandmorty-rn/) — README, ADR e como rodar ficam lá |
-| Plano e checklist de cada um | [`docs/plano-de-trabalho.md`](docs/plano-de-trabalho.md) |
+## Pré-requisitos
 
-## Integrantes
+- Node.js LTS e npm
+- Android Studio com um emulador Android configurado (para Android)
+- Xcode e CocoaPods (para iOS, somente macOS)
 
-| Nome | Feature |
-|---|---|
-| Paulo Euclydes Aranha Junior **(líder)** | F1 Lista · fundação · ADR |
-| Vinícius Eduardo Silva Oliveira | F2 Detalhe |
-| Hugo Fontolan Piani | F3 Busca · estados vazio/erro/offline |
-| Guilherme Henrique Jeske | F4 Filtro · CI e testes |
-| Marcus Vinicius da Cruz Santos | F5 Favoritos · README do app |
-| Rafael Oliveira de Lima | F6 Episódios |
-| Sesaque de Oliveira da Cruz | F7 Tema claro/escuro · design system |
+## Como rodar
 
-## Como trabalhar
+A partir da raiz do repositório:
 
-1. `git config user.email` com o e-mail da sua conta do GitHub (senão o commit não conta como seu).
-2. Uma branch por feature (`feat/<feature>`), PR pequeno e cedo para a `main`.
-3. Só entra na `main` por PR, com CI verde e uma aprovação.
+```bash
+cd rickandmorty-rn
+npm install
+npm start
+```
+
+No terminal do Expo, escolha uma plataforma. Também é possível executar
+diretamente:
+
+```bash
+npm run android # emulador Android aberto
+npm run ios     # macOS + simulador iOS
+npm run web
+```
+
+`npm run android` faz a primeira compilação nativa e pode levar alguns minutos.
+O app usa a Rick and Morty API, portanto a lista, a busca, os filtros e os
+detalhes precisam de internet. Favoritos já salvos continuam disponíveis offline.
+
+## Testes e validação
+
+```bash
+npm run typecheck
+npm test -- --runInBand
+npx expo prebuild --platform android
+```
+
+O `typecheck` valida o TypeScript. Os testes (12 suítes em Jest) cobrem a lógica
+que o grupo escreveu, com o JSON real da API e sem rede:
+
+- mapeamento da API para o domínio, paginação e busca sem resultado (404 vira lista vazia);
+- montagem da query de filtros e os chips de status;
+- episódios: código `S02E07`, agrupamento por temporada e ids extraídos das URLs;
+- favoritos: adicionar, remover e não duplicar;
+- tema: preferência × esquema do sistema e contraste WCAG AA das cores;
+- debounce da busca e o hook `useCharacters`.
+
+O `prebuild` verifica que o projeto nativo Android pode ser gerado; ele não
+substitui a compilação em um emulador. O CI (`.github/workflows/ci.yml`) roda
+typecheck, testes e gera o APK Android em todo PR e em cada merge na `main`.
+
+## Funcionalidades
+
+- Lista paginada de personagens com pull-to-refresh.
+- Busca por nome (com debounce) e filtro por status.
+- Estados de carregando, vazio, erro com "Tentar de novo" e aviso de sem internet.
+- Tela de detalhe com informações, episódios relacionados e compartilhamento.
+- Aba de episódios com navegação para os personagens.
+- Favoritos persistidos em AsyncStorage, com snapshot de nome, foto e status,
+  contador na aba e remoção com desfazer.
+- Tema claro/escuro e componentes visuais compartilhados.
+
+## Arquitetura
+
+```text
+rickandmorty-rn/src/
+  api/          HTTP e DTOs da API
+  domain/       tipos e funções puras
+  queries/      estado do servidor com TanStack Query
+  hooks/        hooks sem regra de negócio (debounce da busca)
+  stores/       estado local com Zustand (favoritos e tema)
+  theme/        tokens e temas do React Native Paper
+  components/   componentes reutilizáveis
+  screens/      UI; as telas não fazem fetch diretamente
+  navigation/   abas e stack dos detalhes
+```
+
+O estado vindo da API fica no TanStack Query; escolhas do usuário, como
+favoritos e tema, ficam no Zustand. A decisão arquitetural completa, incluindo
+alternativas consideradas, está em [`ADR.md`](rickandmorty-rn/ADR.md).
+
+## Screenshots
+
+Capturas do APK de release no emulador Android (API 35). Os arquivos ficam em
+[`docs/screenshots/`](docs/screenshots/).
+
+### Por funcionalidade
+
+| Funcionalidade | Responsável | Captura |
+|---|---|---|
+| **F1 · Lista** de personagens com scroll infinito | Paulo | <img src="docs/screenshots/f7-tema-claro.png" width="200"> |
+| **F2 · Detalhe** do personagem | Vinícius | <img src="docs/screenshots/f7-detalhe-claro.png" width="200"> |
+| **F3 · Busca** por nome + estados vazio, erro e sem internet | Hugo | <img src="docs/screenshots/f3-busca-claro.png" width="200"> <img src="docs/screenshots/f3-vazio-escuro.png" width="200"> <img src="docs/screenshots/f3-erro-claro.png" width="200"> <img src="docs/screenshots/f3-offline-escuro.png" width="200"> |
+| **F4 · Filtro** por status, na API | Guilherme | <img src="docs/screenshots/f4-filtro-mortos.png" width="200"> |
+| **F5 · Favoritos** com desfazer, salvos no aparelho | Marcus | <img src="docs/screenshots/f5-favoritar.png" width="200"> <img src="docs/screenshots/f7-favoritos-claro.png" width="200"> |
+| **F6 · Episódios** por temporada, detalhe e "Aparece em N episódios" | Rafael | <img src="docs/screenshots/f7-episodios-claro.png" width="200"> <img src="docs/screenshots/f6-episodio-detalhe.png" width="200"> <img src="docs/screenshots/f6-aparece-em.png" width="200"> |
+| **F7 · Tema** Sistema, Claro e Escuro + design system | Sesaque | <img src="docs/screenshots/f7-seletor-tema.png" width="200"> <img src="docs/screenshots/f7-detalhe-escuro.png" width="200"> <img src="docs/screenshots/f7-episodios-escuro.png" width="200"> |
+
+### F7 · Tema claro e escuro em todas as telas
+
+| | Claro | Escuro |
+|---|---|---|
+| **Personagens** (lista, filtro e favoritos) | <img src="docs/screenshots/f7-tema-claro.png" width="220"> | <img src="docs/screenshots/f7-tema-escuro.png" width="220"> |
+| **Detalhe** do personagem | <img src="docs/screenshots/f7-detalhe-claro.png" width="220"> | <img src="docs/screenshots/f7-detalhe-escuro.png" width="220"> |
+| **Episódios** por temporada | <img src="docs/screenshots/f7-episodios-claro.png" width="220"> | <img src="docs/screenshots/f7-episodios-escuro.png" width="220"> |
+| **Favoritos** salvos | <img src="docs/screenshots/f7-favoritos-claro.png" width="220"> | <img src="docs/screenshots/f7-favoritos-escuro.png" width="220"> |
+
+## Estrutura de pastas
+
+O app mantém a separação `screens → queries/stores → api → domain`. Isso permite
+que cada feature evolua sem duplicar fetch, cache ou regras de mapeamento e
+mantém os testes independentes da rede.
