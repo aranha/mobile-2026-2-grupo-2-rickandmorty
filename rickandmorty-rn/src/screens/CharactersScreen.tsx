@@ -23,9 +23,6 @@ export function CharactersScreen({ navigation }: TabScreenProps<'Characters'>) {
 
   const characters = useMemo(() => query.data?.pages.flatMap((page) => page.items) ?? [], [query.data]);
 
-  // Estável: a busca chama onSearch num efeito, e uma função nova a cada render dispararia de novo.
-  const search = useCallback((name: string) => setFilters((current) => ({ ...current, name })), []);
-
   const openDetail = useCallback(
     (character: CharacterSummary) =>
       navigation.navigate('CharacterDetail', { id: character.id, name: character.name }),
@@ -97,7 +94,7 @@ export function CharactersScreen({ navigation }: TabScreenProps<'Characters'>) {
 
   return (
     <View testID="item-list-screen" style={styles.container}>
-      <CharacterSearchBar onSearch={search} />
+      <CharacterSearchBar onSearch={(name) => setFilters((current) => ({ ...current, name }))} />
       <StatusFilterChips
         value={filters.status}
         onChange={(status) => setFilters((current) => ({ ...current, status }))}

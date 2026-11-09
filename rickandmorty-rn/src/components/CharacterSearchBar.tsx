@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useEffectEvent, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Searchbar } from 'react-native-paper';
 import { useDebouncedValue } from '../hooks/useDebouncedValue';
@@ -7,7 +7,7 @@ import { spacing } from '../theme/tokens';
 const DEBOUNCE_MS = 400;
 
 export interface CharacterSearchBarProps {
-  /** Chamado com o texto já com debounce — a tela só repassa para o filtro. Precisa ser estável (useCallback). */
+  /** Chamado com o texto já com debounce — a tela só repassa para o filtro. */
   onSearch: (name: string) => void;
 }
 
@@ -15,10 +15,12 @@ export interface CharacterSearchBarProps {
 export function CharacterSearchBar({ onSearch }: CharacterSearchBarProps) {
   const [text, setText] = useState('');
   const debounced = useDebouncedValue(text, DEBOUNCE_MS);
+  // Efeito só reage ao texto: a tela pode passar uma função nova a cada render sem disparar a busca de novo.
+  const emitSearch = useEffectEvent(onSearch);
 
   useEffect(() => {
-    onSearch(debounced);
-  }, [debounced, onSearch]);
+    emitSearch(debounced);
+  }, [debounced]);
 
   return (
     <Searchbar
@@ -28,7 +30,6 @@ export function CharacterSearchBar({ onSearch }: CharacterSearchBarProps) {
       style={styles.bar}
       autoCorrect={false}
       autoCapitalize="none"
-      returnKeyType="search"
       accessibilityLabel="Buscar personagem por nome"
       testID="search-input"
     />
